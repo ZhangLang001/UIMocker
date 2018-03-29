@@ -93,6 +93,10 @@ public abstract class By {
 
 	}
 
+	public static By attribute(final String attri,String value) {
+		return new Attribute(attri,value);
+	}
+
 	/**
 	 * Returns the value. 
 	 * 
@@ -192,6 +196,20 @@ public abstract class By {
 		@Override
 		public String getValue(){
 			return tagName;
+		}
+	}
+
+	static class Attribute extends By {
+		private final String attri;
+		private final String value;
+		public Attribute(String attri,String value) {
+			this.attri = attri;
+			this.value = value;
+		}
+
+		@Override
+		public String getValue() {
+			return attri + "\""+ "," + "\"" +value;
 		}
 	}
 }

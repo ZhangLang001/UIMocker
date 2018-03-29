@@ -3,10 +3,7 @@ package com.llx278.uimocker2;
 import android.annotation.SuppressLint;
 import android.webkit.WebSettings;
 
-import java.lang.reflect.Method;
-
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 
 /**
@@ -38,7 +35,7 @@ class WebViewExecutor {
                     }
                     proxy.loadUrl(url);
                 } catch (Exception e) {
-                    Logger.e(e);
+                    MLogger.e(e);
                 }
             }
         });

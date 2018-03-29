@@ -1,19 +1,10 @@
 package com.llx278.uimocker2;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.SystemClock;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.Window;
 import android.widget.TextView;
-
-import java.lang.reflect.Constructor;
-import java.security.PrivilegedAction;
 
 /**
  * 包含一些与click相关的方法
@@ -51,12 +42,12 @@ public class Clicker {
             MotionEvent downEvent = getSimpleMotionEvent(MotionEvent.ACTION_DOWN, x, y);
             mInst.sendPointerSync(downEvent);
             downEvent.recycle();
-            pause(MIN_CLICK_INTERCEPT);
+            //pause(MIN_CLICK_INTERCEPT);
             MotionEvent upEvent = getSimpleMotionEvent(MotionEvent.ACTION_UP, x, y);
             mInst.sendPointerSync(upEvent);
             upEvent.recycle();
         } catch (SecurityException e) {
-            Logger.e(LOG_TAG,String.format("Clicker.clickOnScreen(float,float) : " +
+            MLogger.e(LOG_TAG,String.format("Clicker.clickOnScreen(float,float) : " +
                     "click at (" + x + ", " + y + ") can not be completed!\n" +
                     "runtime:[x=%f,y=%f]",x,y),e);
             return false;
@@ -94,7 +85,7 @@ public class Clicker {
             pause(MINI_WAIT);
             return true;
         } catch (SecurityException e) {
-            Logger.e(LOG_TAG,String.format("Clicker.longClickOnScreen(float,float) : " +
+            MLogger.e(LOG_TAG,String.format("Clicker.longClickOnScreen(float,float) : " +
                     "long click at (" + x + ", " + y + ") can not be completed!\n" +
                     "runtime:[x=%f,y=%f]",x,y),e);
             return false;
@@ -159,8 +150,8 @@ public class Clicker {
      */
 
     private boolean clickOnScreen(View view, boolean longClick, long time) {
+
         if (view == null) {
-            Logger.i(LOG_TAG, "Clicker.clickOnScreen(View,boolean,long) : clickView is null and can therefore not be clicked!");
             return false;
         }
 
@@ -200,7 +191,7 @@ public class Clicker {
     private boolean clickOnView(final View target,final View container,final boolean longClick,final long time) {
         final float[] out = new float[2];
         if (!findTouchPosition(out,container,target)) {
-            Logger.e("Clicker.clickOnView(View,View,boolean,long) find TouchPosition failed!",null);
+            MLogger.e("Clicker.clickOnView(View,View,boolean,long) find TouchPosition failed!",null);
             return false;
         }
         if (!longClick) {
@@ -293,7 +284,7 @@ public class Clicker {
                 listItem = v;
             }
         } catch (ClassCastException e) {
-            Logger.e(LOG_TAG,"targetView is not a child of container!",e);
+            MLogger.e(LOG_TAG,"targetView is not a child of container!",e);
             return false;
         }
 
@@ -312,7 +303,7 @@ public class Clicker {
         if (tv != null) {
             return clickOnScreen(tv, longClick, time);
         }
-        Logger.e(LOG_TAG,"can not search textView from regex:" + regex + " click failed!",null);
+        MLogger.e(LOG_TAG,"can not search textView from regex:" + regex + " click failed!",null);
         return false;
     }
 }

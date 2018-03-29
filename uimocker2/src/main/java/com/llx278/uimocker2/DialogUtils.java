@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * 
  */
 
-class DialogUtils {
+public class DialogUtils {
 
 	private final InstrumentationDecorator instrumentation;
 	private final ActivityUtils activityUtils;
@@ -34,7 +34,7 @@ class DialogUtils {
 	 * @param viewGetter the {@code ViewGetter} instance
 	 */
 
-	public DialogUtils(InstrumentationDecorator instrumentation, ActivityUtils activityUtils, ViewGetter viewGetter) {
+	DialogUtils(InstrumentationDecorator instrumentation, ActivityUtils activityUtils, ViewGetter viewGetter) {
 		this.instrumentation = instrumentation;
 		this.activityUtils = activityUtils;
 		this.viewGetter = viewGetter;
@@ -55,7 +55,7 @@ class DialogUtils {
 	 */
 
 	public boolean waitForDialogToClose(long timeout) {
-		waitForDialogToOpen(TIMEOUT_DIALOG_TO_CLOSE, false);
+		waitForDialogToOpen(TIMEOUT_DIALOG_TO_CLOSE);
 		final long endTime = SystemClock.uptimeMillis() + timeout;
 
 		while (SystemClock.uptimeMillis() < endTime) {
@@ -77,13 +77,9 @@ class DialogUtils {
 	 * @return {@code true} if the {@code Dialog} is opened before the defaultWaitTimeout and {@code false} if it is not opened
 	 */
 
-	public boolean waitForDialogToOpen(long timeout, boolean sleepFirst) {
+	public boolean waitForDialogToOpen(long timeout) {
 		final long endTime = SystemClock.uptimeMillis() + timeout;
 		boolean dialogIsOpen = isDialogOpen();
-
-		if(sleepFirst) {
-			pause(MINISLEEP);
-		}
 		
 		if(dialogIsOpen){
 			return true;

@@ -1,5 +1,6 @@
 package com.llx278.uimocker2;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -9,22 +10,21 @@ import java.util.Locale;
 import de.robv.android.xposed.XposedBridge;
 
 /**
- * Logger 工具类
+ * MLogger 工具类
  * Created by llx on 05/01/2018.
  */
 
-public class Logger {
+class MLogger {
     private static final String TAG = "uimocker";
     private static final boolean DEBUG = true;
-    private static final boolean XPOSED_ENABLE = true;
-    private static final String SPILT = "  ";
 
     public static void d(String tag, String msg) {
         if(DEBUG) {
-            if (XPOSED_ENABLE) {
-                XposedBridge.log(tag + SPILT + timeStamp2DateStr(System.currentTimeMillis()) + SPILT  + msg);
-            } else {
-                Log.d(tag,msg);
+            Log.d(tag,msg);
+            try {
+                String time = timeStamp2DateStr(SystemClock.currentThreadTimeMillis());
+                XposedBridge.log(time + "#" +tag + "#" + msg);
+            } catch (Exception ignore) {
             }
         }
     }
@@ -35,10 +35,11 @@ public class Logger {
 
     public static void i(String tag,String msg) {
         if (DEBUG){
-            if (XPOSED_ENABLE){
-                XposedBridge.log(tag + SPILT + timeStamp2DateStr(System.currentTimeMillis()) +  SPILT  +msg);
-            } else {
-                Log.i(TAG,msg);
+            Log.i(TAG,msg);
+            try {
+                String time = timeStamp2DateStr(SystemClock.currentThreadTimeMillis());
+                XposedBridge.log(time + "#" +tag + "#" + msg);
+            } catch (Exception ignore) {
             }
         }
     }
@@ -48,14 +49,12 @@ public class Logger {
     }
 
     public static void e(String tag,String msg,Throwable e){
-        if (XPOSED_ENABLE) {
-            XposedBridge.log(tag + SPILT + timeStamp2DateStr(System.currentTimeMillis()) +  SPILT  +msg);
-            if (e != null) {
-                XposedBridge.log(e);
-            }
-        } else {
-            if (e != null) {
-                Log.e(tag,msg,e);
+        if (e != null) {
+            Log.e(tag,msg,e);
+            try {
+                String time = timeStamp2DateStr(SystemClock.currentThreadTimeMillis());
+                XposedBridge.log(time + "#" +tag + "#" + msg);
+            } catch (Exception ignore) {
             }
         }
     }

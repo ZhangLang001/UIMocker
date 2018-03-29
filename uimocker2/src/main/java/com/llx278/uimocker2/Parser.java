@@ -1,6 +1,5 @@
 package com.llx278.uimocker2;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -38,7 +37,7 @@ public class Parser {
         try {
 
             if(!createFileIfNeed(path)){
-                Logger.e("Parser.dump(View,path) : path :" + path + " 文件不能创建!",null);
+                MLogger.e("Parser.dump(View,path) : path :" + path + " 文件不能创建!",null);
                 return;
             }
 

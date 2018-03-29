@@ -5,6 +5,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.robv.android.xposed.XposedBridge;
+
 
 /**
  * 包含操作web元素相关的方法
@@ -22,7 +24,7 @@ public class WebUtils {
 	WebUtils(InstrumentationDecorator instrumentation){
 		mInst = instrumentation;
 		mWebElementCreator = new WebElementCreator();
-		mInjector = new WebViewInjector(mWebElementCreator);
+		mInjector = new WebViewInjector(mWebElementCreator,mInst);
 		mExecutor = new WebViewExecutor(instrumentation);
 		mJSCreator = new JavaScriptCreator();
 	}
@@ -173,6 +175,11 @@ public class WebUtils {
 		return proxy.canGoBackOrForward(steps);
 	}
 
+	public void loadUrl(View webView,String url) {
+		WebViewProxy proxy = WebViewProxyCreator.create(webView);
+		proxy.loadUrl(url);
+	}
+
 	private boolean isWebElementSufficientlyShown(WebElement webElement,View webView){
 
 		final int[] xyWebView = new int[2];
@@ -243,6 +250,8 @@ public class WebUtils {
 		}
 		else if(by instanceof By.TagName){
 			return executeJavaScriptFunction("tagName(\""+by.getValue()+"\", \"" + String.valueOf(shouldClick) + "\");",webView,frame);
+		} else if (by instanceof By.Attribute) {
+			return executeJavaScriptFunction("attribute(\""+by.getValue()+"\", \"" + String.valueOf(shouldClick) + "\");",webView,frame);
 		}
 		return false;
 	}
@@ -258,7 +267,7 @@ public class WebUtils {
 			mExecutor.executeJavaScript(javaScript,webView);
 			finish = mWebElementCreator.waitForWebElementsToBeCreated();
 		}
-		mInjector.unInject();
+		mInjector.unInject(webView);
 		return finish;
 	}
 
